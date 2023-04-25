@@ -1,0 +1,17 @@
+palindromos
+
+representación:
+	palindromos se representa con estr, donde
+		estr es tupla⟨
+			long: nat
+			palabra: secu(α)
+		⟩
+
+invariante de representación:
+	Rep: estr → bool
+	(∀e: estr) Rep(e) ≡ true ⇔ e.long = long(e.palabra) ∧L (∀i:nat)(i < e.long ⟹L e.palabra[i] = e.palabra[e.long-1-i])
+
+función de abstracción:
+	Abs: estr e → palindromos { Rep(e) }
+	(∀e: estr) Abs(e) =obs a | ver(a) = e.palabra
+

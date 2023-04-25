@@ -1,0 +1,36 @@
+representación:
+	ab se representa con puntero(estr), donde
+		estr es tupla⟨
+			altura: nat
+			izq:puntero(estr)
+			raiz: α
+			der: puntero(estr)
+		⟩
+
+rep en palabras:
+
+izq y der cumplen rep, y la altura de ellos es menor o igual a altura, además, la altura de uno de ellos es altura
+
+abs en palabras:
+nil si el puntero es nulo, raiz es igual a *e.raiz, izq = abs(*e.izq) mismo para der 
+
+invariante de representación:
+	Rep: puntero(estr) → bool
+	(∀p: puntero(estr)) Rep(p) ≡ true ⇔ (p = nullptr ∨L Rep(*p.izq) ∧ Rep(*p.der) ∧L
+
+		(p->altura = 1 ∧ p->der = p->izq = nullptr) ∨
+
+		if p->izq = nullptr 
+			then p->der != nullptr ∧L p->der->altura = p->altura - 1 
+		else if p->der = nullptr
+			then p->izq != nullptr ∧L p->izq->altura = p->altura - 1  
+		else
+			(p->izq->altura = p->altura - 1 ∧ p->der->altura ≤ p->altura - 1) 
+			∨ 
+			(p->der->altura = p->altura - 1 ∧ p->izq->altura ≤ p->altura - 1)
+		fi )
+
+
+función de abstracción:
+	Abs: puntero(estr) p → algo { Rep(p) }
+	(∀p: puntero(estr)) Abs(p) =obs if p=nullptr then nil else bin(abs(p->izq),p->raiz,abs(p->der)) fi

@@ -1,0 +1,10 @@
+
+// quiero que 3x⁴+x+1 sea representado por <4,[0,0,3,0,0,1,1]> si estoy en polinomios de grado menor que 6
+invariante de representación:
+	Rep: estr → bool
+	(∀e: estr) Rep(e) ≡ true ⇔ e.grado ≤ n ∧ e.coef[n-1-estr.grado] != 0 ∧ (∀ i : NAT)(i < n-1-e.grado ⟹ e.coef[i] = 0)
+
+
+	función de abstracción:
+	 	Abs: estr e → polinomio { Rep(e) }
+	 	(∀e: estr) Abs(e) =obs p | (∀n:nat)(evaluar(p,n) = ∑(i=0,e.grado)(n^i * e.coef[n-1-i]) 

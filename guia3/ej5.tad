@@ -1,0 +1,60 @@
+representación:
+	fila se representa con estr, donde
+		estr es tupla⟨
+			entraron : conj(persona)
+			fila: cola(persona)
+			colados: conj(persona)
+			atendidos:conj(persona)
+		⟩
+
+invariante de representación:
+	Rep: estr → bool
+	(∀e: estr) Rep(e) ≡ true ⇔ (
+
+	//no hay repetidos y todos estan en entraron (recuerdo: hay un generador para que la gente se vaya de la fila sin ser atendida)
+
+	(∀i,j:Nat)(i,j < tamaño(e.fila) ∧ i != j ⟹ e.fila[i] ∈ e.entraron ∧ e.fila[i] != e.fila[j])
+
+	∧
+
+	//los colados estan en la fila
+
+	(∀p:persona)(p ∈ e.colados ⟹ (∃i:Nat)(i < tamaño(e.fila) ∧L e.fila[i] = p))
+
+	∧ 
+
+	//los atendidos alguna vez entraron
+
+	e.atendidos ⊂ e.entraron
+	)
+
+
+función de abstracción:
+	Abs: estr e → fila { Rep(e) }
+	(∀e: estr) Abs(e) =obs a | (∀p:persona)(
+
+		esperando(p,a) ⟺ (∃i:Nat)(i < tamaño(e.fila) ∧L e.fila[i] = p)
+
+		∧
+
+		vacia(a) ⟺ tamaño(e.fila) = 0
+
+		∧
+
+		entro?(p,a) ⟺ p ∈ e.entraron
+
+		∧
+
+		fueAtendido?(p,a) ⟺ p ∈ atendidos
+
+		∧
+
+			¬esperando(p,a) ∨L //si no estaba en esperando ok, sino...
+
+			(∃i:Nat)(i < tamaño(e.fila) ∧L e.fila[i] = p ∧ posicion(p,a) = i)
+
+			∧
+
+			SeColo?(p,a) ⟺ p ∈ colados
+
+		)
